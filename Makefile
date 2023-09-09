@@ -1,7 +1,7 @@
 all: FileSystem
 
-FileSystem: main.c
-	gcc -g main.c -o FileSystem -lm -lpthread
+FileSystem: main.c workers.c
+	gcc -g main.c workers.c -o FileSystem -lm -lpthread
 
 clean:
 	rm -f FileSystem
