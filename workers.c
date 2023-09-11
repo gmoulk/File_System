@@ -52,24 +52,33 @@ void work(int numOfFilesWanted,sem_t* semaphore_req,int i,struct shared_struct *
 		    fprintf(stderr, "shmat failed\n");
 		    exit(EXIT_FAILURE);
 	    }
-        printf("waiting semaphore request!\n");
+        
         shared_t = (struct temp_struct *)shared_temp;
+        // int value = 0;
+        // printf("here not %d\n",i);
+        // int ret_val = sem_getvalue(semaphore_req,&value);
+        // printf("Semaphore before post has value:%d and ret_val:%d in thread",value,ret_val);
+        printf("waiting semaphore request! %d\n",i);
         if (sem_wait(semaphore_req) < 0) {
             perror("sem_wait(3) failed on child");
             continue;
         }
         strcpy(shared->name_of_file,name);
-        shared->line_end = rand() % MAX_LINES;
-        shared->line_start = rand() % (shared->line_end);
+        // shared->line_end = rand() % MAX_LINES;
+        // shared->line_start = rand() % (shared->line_end);
+        shared->line_end = 1;
+        shared->line_start = 0;
         shared->temp_id = shmid;
         char sem_name[1024];
         sprintf(sem_name, "TS%d", i);
+        printf("created semaphore %s\n",sem_name);
         strcpy(shared->name_of_semaphore,sem_name);
         char sem_name_ans[1024];
         sprintf(sem_name_ans, "TS_ANS%d", i);
         strcpy(shared->name_of_semaphore_ans,sem_name_ans);
         shared_t->line_start = shared->line_start;
         shared_t->line_end = shared->line_end;
+        printf("doing waking%d!\n",i);
         if (sem_post(semaphore_wake) < 0) {
             perror("sem_post(3) error on child");
         }
@@ -77,16 +86,16 @@ void work(int numOfFilesWanted,sem_t* semaphore_req,int i,struct shared_struct *
         double time_taken = ((double) (end - start))/CLOCKS_PER_SEC;
         fprintf(fp,"Request %d was file with name %s and took %f secs from creating to acceptance\n",k,name,time_taken);
         int j = 0;
-        printf("waiting semaphore answer!\n");
+        printf("waiting semaphore answer!%d\n",i);
         if (sem_wait(semaphore_answer) < 0) {
             perror("sem_wait(3) failed on child");
             continue;
         }
-        printf("posting request!\n");
+        printf("posting request!%d\n",i);
         if (sem_post(semaphore_req) < 0) {
             perror("sem_post(3) error on child");
         }
-        printf("posted request!\n");
+        printf("posted request!%d\n",i);
         while (1) {
             if(j>=shared_t->line_start){
                 if (sem_wait(semaphore_transactions) < 0) {
@@ -110,8 +119,8 @@ void work(int numOfFilesWanted,sem_t* semaphore_req,int i,struct shared_struct *
 	    }
         int random_number = expodential_distributed_number_generator(lambda,i);
         sum += random_number;
-        printf("done one loop\n");    
-            // sleep(random_number);
+        printf("done one loop %d\n",i);    
+            sleep(random_number);
         }
         sum = sum/numOfFilesWanted;
         fprintf(fp, "Average time between reqs is %f\n",sum);
