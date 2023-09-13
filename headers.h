@@ -12,6 +12,7 @@
 #include <pthread.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 
 
 #define SEM_NAME1 "file_req"
@@ -29,7 +30,6 @@ struct temp_struct {
 };
 
 struct shared_struct {
-	int file_num;
     int line_start;
     int line_end;
     char name_of_file[2048];

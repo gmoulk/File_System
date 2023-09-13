@@ -27,7 +27,6 @@ int main(int argc,char** argv){
 		exit(EXIT_FAILURE);
 	}
     struct shared_struct * shared =  (struct shared_struct *) shared_memory;
-    shared->file_num = 1;
     int numberOfProcesses = atoi(argv[1]);
     sem_t *semaphore_transactions[numberOfProcesses];
     sem_t *semaphore_transactions_ans[numberOfProcesses];

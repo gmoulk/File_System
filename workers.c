@@ -66,7 +66,7 @@ void work(int numOfFilesWanted,sem_t* semaphore_req,int i,struct shared_struct *
         strcpy(shared->name_of_file,name);
         // shared->line_end = rand() % MAX_LINES;
         // shared->line_start = rand() % (shared->line_end);
-        shared->line_end = 1;
+        shared->line_end = 2;
         shared->line_start = 0;
         shared->temp_id = shmid;
         char sem_name[1024];
@@ -119,10 +119,14 @@ void work(int numOfFilesWanted,sem_t* semaphore_req,int i,struct shared_struct *
 	    }
         int random_number = expodential_distributed_number_generator(lambda,i);
         sum += random_number;
-        printf("done one loop %d\n",i);    
-            sleep(random_number);
+        printf("done one loop %d\n",i);
+            if(k <= numOfFilesWanted - 2)
+                sleep(random_number);
         }
-        sum = sum/numOfFilesWanted;
+        if( numOfFilesWanted != 1 || numOfFilesWanted != 0)
+            sum = sum/(numOfFilesWanted - 1);
+        else
+            sum = 0.0;    
         fprintf(fp, "Average time between reqs is %f\n",sum);
         fclose(fp);
         printf("exited\n");
