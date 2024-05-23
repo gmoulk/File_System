@@ -1,25 +1,15 @@
 # File_System
-Η εργασία αποτελεί ένα file system simulator.
+This project delves into system programming to create a user-friendly application named inotifywait that leverages the pipes and forks in Linux to monitor a specified folder for modifications. When changes occur (file creation, deletion, or modification), the application promptly informs the user, providing a valuable tool for system administrators and developers to stay abreast of file system activity.
 
-Για την μεταγλώττιση απαιτείται να γράψεται την εντολή make η οποία μεταφράζεται σε:
+Functionality
 
-gcc -g main.c workers.c -o FileSystem -lm -lpthread
+Folder Monitoring: The application continuously monitors a user-specified folder for file system events.
+Event Detection: It detects various file system events, including:
 
-Και για την εκτέλεση απαιτείται να δωθεί η εξής εντολή:
-./FileSystem N K lambda
+Creation of new files within the folder
 
-όπου N το πλήθος των διεργασίων K το πλήθος των ετοιμάτων για κάθε εργασία και lambda η παράμετρος για την παραγωγή τυχαίων αριθμών με εκθετική κατανομή.
+Deletion of existing files
 
-Επιπλέον υπάρχει φάκελος test_folder οπου γίνονται οι μετρήσεις με πλήθος γραμμών 10.
+Modifications to files (e.g., changes in content, timestamps)
 
-Χρησιμοποιούνται 3 σεμαφόροι για την αφύπνιση του parent,την αίτηση και την αφύπνιση του παιδιού απο το thread επιπλέον χρησιμοποιούνται 2 πίνακες σεμαφόρων για την ανταλλαγή γραμμών απο το thread στο παιδί.
-
-Η μορφή των log files είναι η ακόλουθη:
-
-Request Χ was file with name όνομα_αρχείου and took Y secs from creating to acceptance
-
-Average time between reqs is Z
-
-Η προσωρινά διαμοιραζώμενη μνήμη περιέχει την γραμμή έναρξης,γραμμή λήξης και την γραμμή που μεταβιβάζεται κάθε φορά.
-
-Και της διαμοιραζόμενης περιέχει την γραμμή έναρξης,την γραμμή λήξης,το όνομα του αρχείου το id του διαμοιραζόμενου προσωρινού χώρου,το όνομα των δύο σεμαφόρων επικοινωνίας για την ανταλλαγή γραμμών.
+User Notification: Upon detecting an event, the application alerts the user through a visually distinct notification on the terminal.
